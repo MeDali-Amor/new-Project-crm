@@ -10,17 +10,12 @@ const Login = () => {
     const from = location.state?.from?.pathname || "/";
     const handleLogin = (e) => {
         e.preventDefault();
+        navigate("/", { replace: true });
     };
     return (
         <div className="loginPage">
             <LoginBanner />
-            <LoginForm
-                handleLogin={handleLogin}
-                // setUserRole={setUserRole}
-                // userRole={userRole}
-                navigate={navigate}
-                from={from}
-            />
+            <LoginForm handleLogin={handleLogin} />
         </div>
     );
 };

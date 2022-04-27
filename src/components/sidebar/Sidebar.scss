@@ -1,0 +1,25 @@
+.sidebar {
+    min-height: 100vh;
+    height: 100%;
+    width: 250px;
+    background: #ffffff;
+    padding-top: 20px;
+    margin-top: 2px;
+    margin-left: 10px;
+    padding-bottom: 10px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-right: 2px solid #eef1f6;
+    .sidebarTitle {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 800;
+        color: #4f546c;
+    }
+    .sidebarList {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+}
