@@ -19,13 +19,8 @@ const containerTransitions = {
     stiffness: 150,
 };
 
-const SearchbarExpand = ({
-    placeholderText = "search",
-    onSubmit,
-    searchInput,
-    setSearchInput,
-}) => {
-    const [companies, setCompanies] = useState(null);
+const SearchbarExpand = ({ placeholderText = "search", handleClick }) => {
+    const [companies, setCompanies] = useState([]);
     const [isExpanded, setIsExpanded] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -50,8 +45,8 @@ const SearchbarExpand = ({
         // console.log(URL);
         try {
             const res = await axios.get(URL);
-            setCompanies(res.data);
-            console.log(companies);
+            setCompanies(res.data.companies);
+            // console.log(companies);
         } catch (error) {
             console.log(error);
         }
@@ -63,9 +58,9 @@ const SearchbarExpand = ({
     };
     const collapseContainer = () => {
         setIsExpanded(false);
-        setSearchQuery("");
+        // setSearchQuery("");
         setIsLoading(false);
-        if (inputRef.current) inputRef.current.value = "";
+        // if (inputRef.current) inputRef.current.value = "";
     };
     useEffect(() => {
         const handler = (e) => {
@@ -137,15 +132,32 @@ const SearchbarExpand = ({
                                 <Loader />
                             </div>
                         )}
-                        {/* {companies.length > 0 && <div>hello</div>}
-                         */}
-                        hello
+                        {companies.length > 0 &&
+                            companies.map((el) => (
+                                <SearchbarResult
+                                    key={el._id}
+                                    el={el}
+                                    handleClick={handleClick}
+                                    collapseContainer={collapseContainer}
+                                />
+                            ))}
                     </div>
                 </motion.div>
-                {companies && <div>hello</div>}
             </div>
         </div>
     );
 };
 
 export default SearchbarExpand;
+
+const SearchbarResult = ({ el, handleClick, collapseContainer }) => {
+    const click = (el) => {
+        handleClick(el);
+        collapseContainer();
+    };
+    return (
+        <div className="serach-result" onClick={() => click(el)}>
+            {el.name}
+        </div>
+    );
+};

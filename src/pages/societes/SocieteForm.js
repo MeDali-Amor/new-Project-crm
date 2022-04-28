@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./SocieteForm.scss";
 const SocieteForm = ({ companyData }) => {
+    const [data, setData] = useState(null);
     const handleAddresseChange = (e) => {
         const { name, value } = e.target;
         const address = { ...companyData.address, [name]: value };
@@ -11,10 +12,12 @@ const SocieteForm = ({ companyData }) => {
         const companyAlt = { ...companyData, [name]: value };
         console.log(companyAlt);
     };
-    console.log(companyData);
+    useEffect(() => {
+        setData(companyData);
+    }, [companyData]);
     return (
         <div className="societe-form-container">
-            <form>
+            <form onSubmit={(e) => e.preventDefault()}>
                 <div className="section">
                     <div className="section-title">General</div>
                     <div className="row">
@@ -24,7 +27,7 @@ const SocieteForm = ({ companyData }) => {
                                 onChange={(e) => handleFieldChange(e)}
                                 name="name"
                                 type="text"
-                                defaultValue={companyData?.name || ""}
+                                defaultValue={data?.name || ""}
                             />
                         </div>
                         <div className="info-feild col-2">
@@ -33,7 +36,7 @@ const SocieteForm = ({ companyData }) => {
                                 onChange={(e) => handleFieldChange(e)}
                                 type="date"
                                 name="creationDate"
-                                defaultValue={companyData?.creationDate || ""}
+                                defaultValue={data?.creationDate || ""}
                             />
                         </div>
                     </div>
@@ -44,7 +47,7 @@ const SocieteForm = ({ companyData }) => {
                                 onChange={(e) => handleFieldChange(e)}
                                 type="text"
                                 name="sirenNumber"
-                                defaultValue={companyData?.sirenNumber || ""}
+                                defaultValue={data?.sirenNumber || ""}
                             />
                         </div>
                         <div className="info-feild col-2">
@@ -53,7 +56,7 @@ const SocieteForm = ({ companyData }) => {
                                 onChange={(e) => handleFieldChange(e)}
                                 name="rcsNumber"
                                 type="text"
-                                defaultValue={companyData?.rcsNumber || ""}
+                                defaultValue={data?.rcsNumber || ""}
                             />
                         </div>
                     </div>
@@ -67,9 +70,7 @@ const SocieteForm = ({ companyData }) => {
                                 onChange={(e) => handleFieldChange(e)}
                                 name="representativeName"
                                 type="text"
-                                defaultValue={
-                                    companyData?.representativeName || ""
-                                }
+                                defaultValue={data?.representativeName || ""}
                             />
                         </div>
                         <div className="info-feild col-2">
@@ -78,9 +79,7 @@ const SocieteForm = ({ companyData }) => {
                                 onChange={(e) => handleFieldChange(e)}
                                 name="representativeType"
                                 type="text"
-                                defaultValue={
-                                    companyData?.representativeType || ""
-                                }
+                                defaultValue={data?.representativeType || ""}
                             />
                         </div>
                     </div>
@@ -94,9 +93,7 @@ const SocieteForm = ({ companyData }) => {
                                 onChange={(e) => handleAddresseChange(e)}
                                 type="text"
                                 name="adresse"
-                                defaultValue={
-                                    companyData?.address?.adresse || ""
-                                }
+                                defaultValue={data?.address?.adresse || ""}
                             />
                         </div>
                         <div className="info-feild col-3">
@@ -105,7 +102,7 @@ const SocieteForm = ({ companyData }) => {
                                 onChange={(e) => handleAddresseChange(e)}
                                 name="city"
                                 type="text"
-                                defaultValue={companyData?.address?.city || ""}
+                                defaultValue={data?.address?.city || ""}
                             />
                         </div>
                         <div className="info-feild col-3">
@@ -114,9 +111,7 @@ const SocieteForm = ({ companyData }) => {
                                 onChange={(e) => handleAddresseChange(e)}
                                 type="text"
                                 name="country"
-                                defaultValue={
-                                    companyData?.address?.country || ""
-                                }
+                                defaultValue={data?.address?.country || ""}
                             />
                         </div>
                     </div>

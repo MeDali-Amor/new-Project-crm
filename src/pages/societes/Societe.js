@@ -2,28 +2,31 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./societe.scss";
 import SocieteForm from "./SocieteForm";
-import SearchbarExpand from "../../components/searchbar/TextSearchFilter";
+import SearchbarExpand from "../../components/searchbar/SearchbarExpand";
 
 const Societe = () => {
-    const [searchInput, setSearchInput] = useState("");
+    // const [searchInput, setSearchInput] = useState("");
     const [companyData, setCompanyData] = useState(null);
-    const SearchSubmit = async (e) => {
-        e.preventDefault();
-        if (searchInput) {
-            const data = {
-                url: searchInput,
-            };
-            try {
-                const res = await axios.post(
-                    "http://localhost:8000/api/scrape-by-url",
-                    data
-                );
-                setCompanyData(res.data.newCompany);
-            } catch (error) {
-                console.log(error);
-            }
-        }
+    const getCompanyInfo = async (el) => {
+        setCompanyData(el);
     };
+    // const SearchSubmit = async (e) => {
+    //     e.preventDefault();
+    //     if (searchInput) {
+    //         const data = {
+    //             url: searchInput,
+    //         };
+    //         try {
+    //             const res = await axios.post(
+    //                 "http://localhost:8000/api/scrape-by-url",
+    //                 data
+    //             );
+    //             setCompanyData(res.data.newCompany);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+    // };
     return (
         <div className="societe-page-wrapper">
             <div className="first-section">
@@ -37,9 +40,10 @@ const Societe = () => {
                 <div className="seach-box-container">
                     <SearchbarExpand
                         placeholderText="Taper le nom de la société ou le numero Siren"
-                        onSubmit={SearchSubmit}
-                        searchInput={searchInput}
-                        setSearchInput={setSearchInput}
+                        // onSubmit={SearchSubmit}
+                        // searchInput={searchInput}
+                        // setSearchInput={setSearchInput}
+                        handleClick={getCompanyInfo}
                     />
                 </div>
             </div>
