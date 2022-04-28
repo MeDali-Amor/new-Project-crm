@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./societe.scss";
-import TextSearchFilter from "../../components/textSearchFilter/TextSearchFilter";
 import SocieteForm from "./SocieteForm";
+import SearchbarExpand from "../../components/searchbar/TextSearchFilter";
 
 const Societe = () => {
     const [searchInput, setSearchInput] = useState("");
@@ -35,7 +35,7 @@ const Societe = () => {
                     </p>
                 </div>
                 <div className="seach-box-container">
-                    <TextSearchFilter
+                    <SearchbarExpand
                         placeholderText="Taper le nom de la société ou le numero Siren"
                         onSubmit={SearchSubmit}
                         searchInput={searchInput}
