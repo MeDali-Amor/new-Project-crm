@@ -142,7 +142,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        padding: 16px 45px;
+        padding: 16px 25px;
         .loading-wrapper {
             width: 100%;
             height: 100%;
@@ -156,6 +156,30 @@
     }
 }
 .serach-result {
-    padding: 16px;
+    padding: 12px 20px;
+    border-radius: 8px;
     cursor: pointer;
+    &:hover {
+        background-color: #f9fafb;
+    }
+    .result-info {
+        margin-right: 24px;
+        .info-main {
+            font-size: 14px;
+            font-weight: 600;
+            color: #101320;
+            margin-right: 8px;
+        }
+        .info-secondary {
+            margin-left: 8px;
+            font-size: 15px;
+            color: #969cb4;
+            // font-style: oblique;
+        }
+        .info-adress {
+            margin-left: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+    }
 }

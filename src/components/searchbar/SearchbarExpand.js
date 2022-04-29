@@ -62,6 +62,11 @@ const SearchbarExpand = ({ placeholderText = "search", handleClick }) => {
         setIsLoading(false);
         // if (inputRef.current) inputRef.current.value = "";
     };
+    const resetSearch = () => {
+        collapseContainer();
+        setSearchQuery("");
+        setCompanies([]);
+    };
     useEffect(() => {
         const handler = (e) => {
             if (!containerRef?.current.contains(e.target)) {
@@ -101,10 +106,10 @@ const SearchbarExpand = ({ placeholderText = "search", handleClick }) => {
                             onFocus={expandContainer}
                         />
                         <AnimatePresence>
-                            {isExpanded && (
+                            {searchQuery.length > 0 && (
                                 <motion.div
                                     className="close-icon"
-                                    onClick={collapseContainer}
+                                    onClick={resetSearch}
                                     key="close-btn"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
@@ -157,7 +162,15 @@ const SearchbarResult = ({ el, handleClick, collapseContainer }) => {
     };
     return (
         <div className="serach-result" onClick={() => click(el)}>
-            {el.name}
+            <span className="result-info">
+                <span className="info-main">{el.name}</span>
+                <span className="info-secondary">{el.sirenNumber}</span>
+            </span>
+            <span className="result-info">
+                <i class="fa-solid fa-location-dot"></i>
+                <span className="info-adress">{el?.address?.city}</span>
+                <span className="info-adress">({el?.address?.zipcode})</span>
+            </span>
         </div>
     );
 };
