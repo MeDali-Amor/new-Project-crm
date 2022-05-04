@@ -19,8 +19,13 @@ const containerTransitions = {
     stiffness: 150,
 };
 
-const SearchbarExpand = ({ placeholderText = "search", handleClick }) => {
+const SearchbarExpand = ({
+    placeholderText = "search",
+    getCompanyInfo,
+    scrapeCompanyInfo,
+}) => {
     const [companies, setCompanies] = useState([]);
+    const [companiesToBeScraped, setCompaniesToBeScraped] = useState([]);
     const [isExpanded, setIsExpanded] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -31,22 +36,36 @@ const SearchbarExpand = ({ placeholderText = "search", handleClick }) => {
         setSearchQuery(e.target.value);
         // console.log(e.target.value);
     };
-    const prepareSearchQuery = (query) => {
+    const prepareSearchQuery = (uri, query) => {
         query = encodeURIComponent(query);
         // query = query.replace("+", "%2B");
-        const url = `http://localhost:8000/api/search?q=${query}`;
+        const url = `${uri}${query}`;
         return encodeURI(url);
         // console.log(query);
     };
     const handleSearch = async () => {
         if (!searchQuery || searchQuery.trim === "") return;
         setIsLoading(true);
-        const URL = prepareSearchQuery(searchQuery);
+        let URL = prepareSearchQuery(
+            "http://localhost:8000/api/search?q=",
+            searchQuery
+        );
         // console.log(URL);
         try {
-            const res = await axios.get(URL);
+            let res = await axios.get(URL);
             setCompanies(res.data.companies);
-            // console.log(companies);
+            if (res.data.companies.length === 0) {
+                URL = prepareSearchQuery(
+                    "http://localhost:8000/api//search-urls?q=",
+                    searchQuery
+                );
+                res = await axios.get(
+                    URL
+                    // `http://localhost:8000/api//search-urls?q=${query}`
+                );
+                setCompaniesToBeScraped(res.data.companies);
+            }
+            // console.log(res.data);
         } catch (error) {
             console.log(error);
         }
@@ -130,23 +149,46 @@ const SearchbarExpand = ({ placeholderText = "search", handleClick }) => {
                     </div>
                     {/* {isExpanded && <div>hello</div>}
                      */}
-                    <span className="line-divider"></span>
-                    <div className="search-content">
-                        {isLoading && (
-                            <div className="loading-wrapper">
-                                <Loader />
+
+                    {isLoading && (
+                        <>
+                            <span className="line-divider"></span>
+                            <div className="search-content">
+                                <div className="loading-wrapper">
+                                    <Loader />
+                                </div>
                             </div>
-                        )}
-                        {companies.length > 0 &&
-                            companies.map((el) => (
-                                <SearchbarResult
-                                    key={el._id}
-                                    el={el}
-                                    handleClick={handleClick}
-                                    collapseContainer={collapseContainer}
-                                />
-                            ))}
-                    </div>
+                        </>
+                    )}
+                    {companies.length > 0 ? (
+                        <>
+                            <span className="line-divider"></span>
+                            <div className="search-content">
+                                {companies.map((el) => (
+                                    <SearchbarResult
+                                        key={el._id}
+                                        el={el}
+                                        handleClick={getCompanyInfo}
+                                        collapseContainer={collapseContainer}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    ) : companiesToBeScraped.length > 0 ? (
+                        <>
+                            <span className="line-divider"></span>
+                            <div className="search-content">
+                                {companiesToBeScraped.map((el) => (
+                                    <SearchbarResult
+                                        key={el.url}
+                                        el={el}
+                                        handleClick={scrapeCompanyInfo}
+                                        collapseContainer={collapseContainer}
+                                    />
+                                ))}
+                            </div>
+                        </> // <p>pas de resultat</p>
+                    ) : null}
                 </motion.div>
             </div>
         </div>
@@ -167,7 +209,7 @@ const SearchbarResult = ({ el, handleClick, collapseContainer }) => {
                 <span className="info-secondary">{el.sirenNumber}</span>
             </span>
             <span className="result-info">
-                <i class="fa-solid fa-location-dot"></i>
+                <i className="fa-solid fa-location-dot"></i>
                 <span className="info-adress">{el?.address?.city}</span>
                 <span className="info-adress">({el?.address?.zipcode})</span>
             </span>

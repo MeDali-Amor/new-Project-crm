@@ -12,9 +12,9 @@ const Layout = ({ userRole }) => {
                 <div className="leftSidebar">
                     <Sidebar />
                 </div>
-                <div style={{ width: "100%" }}>
-                    <Outlet />
-                </div>
+                {/* <div style={{ width: "100%" }}> */}
+                <Outlet />
+                {/* </div> */}
             </div>
         </div>
     );
