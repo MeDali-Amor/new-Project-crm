@@ -29,6 +29,7 @@ const SearchbarExpand = ({
     const [isExpanded, setIsExpanded] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
     let containerRef = useRef();
     let inputRef = useRef();
     const changeHandler = (e) => {
@@ -63,10 +64,13 @@ const SearchbarExpand = ({
                     URL
                     // `http://localhost:8000/api//search-urls?q=${query}`
                 );
+                setError("");
                 setCompaniesToBeScraped(res.data.companies);
             }
             // console.log(res.data);
         } catch (error) {
+            setError("une erreur s'est produite veuillez réessayer");
+
             console.log(error);
         }
         setIsLoading(false);
@@ -85,6 +89,8 @@ const SearchbarExpand = ({
         collapseContainer();
         setSearchQuery("");
         setCompanies([]);
+        setCompaniesToBeScraped([]);
+        setError("");
     };
     useEffect(() => {
         const handler = (e) => {
@@ -160,7 +166,15 @@ const SearchbarExpand = ({
                             </div>
                         </>
                     )}
-                    {companies.length > 0 ? (
+                    {error && (
+                        <>
+                            <span className="line-divider"></span>
+                            <div className="search-content">
+                                <div className="loading-wrapper">{error}</div>
+                            </div>
+                        </>
+                    )}
+                    {isLoading === false && companies.length > 0 ? (
                         <>
                             <span className="line-divider"></span>
                             <div className="search-content">

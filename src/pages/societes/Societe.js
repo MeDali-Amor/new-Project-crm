@@ -4,6 +4,7 @@ import "./societe.scss";
 import SocieteForm from "./SocieteForm";
 import SearchbarExpand from "../../components/searchbar/SearchbarExpand";
 import Loader from "../../components/loader/Loader";
+import SocieteSkeletonForm from "./SocieteSkeletonForm";
 
 const Societe = () => {
     // const [searchInput, setSearchInput] = useState("");
@@ -74,14 +75,16 @@ const Societe = () => {
                     />
                 </div>
             </div>
+
             {companyData !== null && companyData !== undefined ? (
                 <div className="second-section">
                     <SocieteForm companyData={companyData} />
                 </div>
             ) : loading ? (
-                <div className="loading-wrapper">
-                    <Loader />
-                </div>
+                // <div className="loading-wrapper">
+                //     <Loader />
+                // </div>
+                <SocieteSkeletonForm />
             ) : null}
         </div>
     );

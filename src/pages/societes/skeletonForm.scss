@@ -1,0 +1,67 @@
+.societe-form-container {
+    width: 100%;
+    padding: 50px;
+    div {
+        .section-skeleton {
+            margin-bottom: 24px;
+            .section-title-skeleton {
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 700;
+                color: #364a63;
+                height: 30px;
+                width: 200px;
+                border-radius: 5px;
+
+                opacity: 0.7;
+                animation: skeleton-loading 1s linear infinite alternate;
+            }
+            .row {
+                display: flex;
+                gap: 40px;
+                margin: 16px 0;
+                .col-2 {
+                    width: 50%;
+                }
+                .col-3 {
+                    width: 33.333%;
+                }
+                .info-feild-skeleton {
+                    // padding: 12px 50px;
+                    // height: 50px;
+                    // background-color: #364a63;
+                    // width: 300px;
+                    .label-skeleton {
+                        height: 24px;
+                        width: 100px;
+                        // background-color: #364a63;
+                        border-radius: 5px;
+
+                        margin: 16px;
+                        opacity: 0.7;
+                        animation: skeleton-loading 1s linear infinite alternate;
+                    }
+                    .input-skeleton {
+                        height: 50px;
+                        // width: 100px;
+                        margin: 16px;
+                        border-radius: 8px;
+
+                        // background-color: #364a63;
+                        opacity: 0.7;
+                        animation: skeleton-loading 1s linear infinite alternate;
+                    }
+                }
+                @keyframes skeleton-loading {
+                    0% {
+                        background-color: hsl(200, 25%, 87%);
+                    }
+
+                    100% {
+                        background-color: hsl(200, 20%, 95%);
+                    }
+                }
+            }
+        }
+    }
+}
