@@ -65,6 +65,17 @@
             font-size: 14px;
             font-weight: 500;
         }
+        .pass-input {
+            position: relative;
+            // background-color: #0284fe;
+        }
+        .show-hide_pass {
+            position: absolute;
+            top: 50%;
+            right: 24px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
         .login-row {
             width: 100%;
             // margin: 14px -30px 14px -10px;

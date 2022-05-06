@@ -4,9 +4,10 @@ import "./fileUploader.scss";
 import uploadImg from "../../assets/cloud-upload-regular-240.png";
 import axios from "axios";
 
-const FileUploader = ({ setData }) => {
+const FileUploader = ({ setData, setIsLoading, setImg }) => {
     // const [data, setData] = useState({});
     const [fileList, setFileList] = useState(null);
+    const [urlInput, setUrlInput] = useState("");
     const [error, setError] = useState("");
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const dragAndDropRef = useRef(null);
@@ -31,6 +32,7 @@ const FileUploader = ({ setData }) => {
         else {
             setFileList(newFile);
             setError("");
+            // console.log(newFile);
         }
     };
     const removeFile = () => {
@@ -38,22 +40,47 @@ const FileUploader = ({ setData }) => {
         // updatedFileList.splice(fileList.indexOf(file), 1);
         setFileList(null);
         const input = document.getElementById("file-input");
-        console.log(input.value);
+        // console.log(input.value);
         input.value = "";
     };
-
+    const onFileUrlSubmit = async (e) => {
+        e.preventDefault();
+        if (urlInput.length === 0) return;
+        try {
+            const config = { responseType: "blob" };
+            const res = await axios.get(
+                // "https://thumbs.dreamstime.com/b/belle-femme-heureuse-montrant-le-signe-d-amour-pr%C3%A8s-des-yeux-83939671.jpg",
+                urlInput,
+                config
+            );
+            const fileDate = Date.parse(res.headers["last-modified"]);
+            const fileType = res.headers["content-type"];
+            const fileExtention = fileType.substring(fileType.indexOf("/") + 1);
+            const fileName = `${fileDate}.${fileExtention}`;
+            const file = new File([res.data], fileName);
+            setFileList(file);
+            // console.log(file);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const handleUpload = async () => {
         if (fileList) {
+            setData(null);
+            setIsLoading(true);
             const formData = new FormData();
             formData.append("files", fileList);
             try {
                 const res = await axios.post(
-                    "https://4344-197-1-25-23.eu.ngrok.io/api/detect",
+                    "https://efef-197-238-56-76.eu.ngrok.io/api/detect",
                     formData
                 );
-                await setFileList(null);
                 setData(res.data);
-                console.log(res.data);
+                setImg(fileList);
+                setIsLoading(false);
+                // setFileList(null);
+                removeFile();
+                // console.log(res.data);
             } catch (error) {
                 console.log(error);
             }
@@ -88,8 +115,13 @@ const FileUploader = ({ setData }) => {
                 </div>
                 <div className="url-upload-wrapper">
                     <div className="url-uplaod">
-                        <label>URL:</label>
-                        <input type="text" />
+                        <form onSubmit={onFileUrlSubmit}>
+                            <label>URL:</label>
+                            <input
+                                type="url"
+                                onChange={(e) => setUrlInput(e.target.value)}
+                            />
+                        </form>
                     </div>
                     <div className="upload-btn">
                         <button onClick={handleUpload}>upload</button>
